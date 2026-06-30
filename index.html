@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Automation Test</title>
+  <style>
+    body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 0 20px; }
+    input, button { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+    button { background: #6b4fbb; color: white; border: none; cursor: pointer; }
+    pre { background: #f4f4f4; padding: 12px; white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body>
+  <h2>Automation Platform Test</h2>
+
+  <label>Backend URL</label>
+  <input id="backendUrl" value="https://emalawi19-web-automation-backend.hf.space/run-task">
+
+  <label>Instruction</label>
+  <input id="instruction" value="go to wikipedia">
+
+  <button onclick="runTask()">Run</button>
+
+  <h3>Result</h3>
+  <pre id="output">Nothing yet.</pre>
+
+  <script>
+    async function runTask() {
+      const output = document.getElementById("output");
+      output.textContent = "Running...";
+
+      const url = document.getElementById("backendUrl").value;
+      const instruction = document.getElementById("instruction").value;
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ instruction })
+        });
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
